@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="th" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>WANDERLUST — Global & European Hidden Gems Explorer</title>
+
+    <!-- Google Fonts: Prompt, Inter, Cormorant Garamond (Elegance) & Reenie Beanie (Handwritten Accent) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&family=Prompt:wght@300;400;500;600;700&family=Reenie+Beanie&display=swap" rel="stylesheet">
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Lucide Icons CDN -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        editorial: {
+                            bg: '#F9F7F2',       /* Warm Sand & Rice Paper Tint */
+                            card: '#FFFFFF',
+                            dark: '#1C232B',     /* Charcoal Slate Header/Text */
+                            gold: '#C99D42',     /* Muted Champagne Gold Accent */
+                            accent: '#2A433A',   /* Deep Forest Sage Green */
+                            terracotta: '#B85B3E',
+                            border: '#E8E4DA',
+                            muted: '#6B7280'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Prompt', 'Inter', 'sans-serif'],
+                        serif: ['Cormorant Garamond', 'Prompt', 'serif'],
+                        script: ['Reenie Beanie', 'cursive']
+                    },
+                    boxShadow: {
+                        'soft': '0 20px 40px -15px rgba(28, 35, 43, 0.07)',
+                        'modal': '0 25px 60px -15px rgba(0, 0, 0, 0.22)'
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        :root {
+            --font-scale: 1;
+        }
+
+        html {
+            font-size: calc(16px * var(--font-scale));
+        }
+
+        body {
+            background-color: #F9F7F2;
+            color: #1C232B;
+            font-family: 'Prompt', 'Inter', sans-serif;
+            transition: font-size 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .glass-header {
+            background: rgba(249, 247, 242, 0.92);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #F9F7F2;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #D8D2C4;
+            border-radius: 9999px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #C99D42;
+        }
+
+        /* Editorial Image Hover Scale */
+        .img-zoom-hover {
+            transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .card-container:hover .img-zoom-hover {
+            transform: scale(1.06);
+        }
+
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col selection:bg-editorial-gold selection:text-white">
+
+    <!-- Top Bar Header -->
+    <header class="sticky top-0 z-40 glass-header border-b border-editorial-border transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                
+                <!-- Brand Logo -->
+                <a href="#" class="flex items-center gap-3 group focus:outline-none">
+                    <div class="w-10 h-10 rounded-full bg-editorial-dark text-editorial-gold flex items-center justify-center font-serif font-bold text-xl shadow-md group-hover:scale-105 transition-transform border border-editorial-gold/30">
+                        W
+                    </div>
+                    <div>
+                        <span class="font-serif font-bold text-2xl tracking-widest text-editorial-dark uppercase block leading-none">TRAVEL</span>
+                        <span class="text-[10px] tracking-widest text-editorial-gold font-sans font-semibold uppercase block mt-1" id="nav-subtitle">GLOBAL & EUROPEAN EXPLORER</span>
+                    </div>
+                </a>
+
+                <!-- Desktop Nav Links -->
+                <nav class="hidden lg:flex items-center gap-8 text-xs font-medium tracking-wider text-editorial-dark uppercase">
+                    <a href="#destinations-section" class="hover:text-editorial-gold transition" id="nav-link-destinations">จุดหมายปลายทาง</a>
+                    <a href="#featured-hero" class="hover:text-editorial-gold transition" id="nav-link-experiences">ประสบการณ์พิเศษ</a>
+                    <a href="#utilities-section" class="hover:text-editorial-gold transition" id="nav-link-tools">เครื่องมือเดินทาง</a>
+                </nav>
+
+                <!-- Navigation Utilities Dock -->
+                <div class="flex items-center gap-2 sm:gap-3">
+                    
+                    <!-- Accessibility Font Scaler -->
+                    <div class="flex items-center bg-stone-200/70 p-1 rounded-full border border-editorial-border" title="ปรับขนาดตัวอักษร / Font Scale">
+                        <button onclick="adjustFontSize(-0.08)" class="w-7 h-7 rounded-full bg-white shadow-sm hover:bg-editorial-dark hover:text-white text-editorial-dark font-bold flex items-center justify-center transition text-xs" aria-label="Decrease font">
+                            A-
+                        </button>
+                        <span class="px-2 text-[11px] font-bold text-editorial-dark hidden md:inline" id="font-scale-label">100%</span>
+                        <button onclick="adjustFontSize(0.08)" class="w-7 h-7 rounded-full bg-white shadow-sm hover:bg-editorial-dark hover:text-white text-editorial-dark font-bold flex items-center justify-center transition text-xs" aria-label="Increase font">
+                            A+
+                        </button>
+                    </div>
+
+                    <!-- 5-Language Switcher Dropdown (TH / EN / CN / DE / ES) -->
+                    <div class="relative inline-block text-left">
+                        <select id="langSelect" onchange="switchLanguage(this.value)" class="bg-stone-200/70 border border-editorial-border text-editorial-dark text-xs font-bold rounded-full px-3 py-1.5 focus:outline-none focus:ring-2 focus:ring-editorial-gold cursor-pointer">
+                            <option value="th">🇹🇭 TH</option>
+                            <option value="en">🇺🇸 EN</option>
+                            <option value="cn">🇨🇳 中文</option>
+                            <option value="de">🇩🇪 DE</option>
+                            <option value="es">🇪🇸 ES</option>
+                        </select>
+                    </div>
+
+                    <!-- Bookmark Favorites Drawer Trigger -->
+                    <button onclick="toggleFavoritesModal()" class="relative p-2.5 rounded-full bg-stone-200/70 hover:bg-stone-300/80 text-editorial-dark transition border border-editorial-border" title="รายการที่บันทึกไว้">
+                        <i data-lucide="bookmark" class="w-4 h-4"></i>
+                        <span id="favCountBadge" class="absolute -top-1 -right-1 bg-editorial-gold text-editorial-dark text-[10px] font-extrabold w-4 h-4 rounded-full flex items-center justify-center border border-white shadow-sm">0</span>
+                    </button>
+
+                </div>
+
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Editorial Section (Matching User Reference Image) -->
+    <section id="featured-hero" class="relative py-8 md:py-14 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-7xl mx-auto">
+            
+            <!-- Reference Style Split Card Container -->
+            <div class="bg-white rounded-3xl border border-editorial-border shadow-modal overflow-hidden grid grid-cols-1 lg:grid-cols-12 min-h-[580px]">
+                
+                <!-- Left Featured Image Column with Cursive Script -->
+                <div class="lg:col-span-5 relative min-h-[320px] lg:min-h-full bg-editorial-dark overflow-hidden flex flex-col justify-between p-8 text-white">
+                    <img id="heroLeftBg" src="https://images.unsplash.com/photo-1533105079780-92b9be482077?auto=format&fit=crop&w=1200&q=80" alt="European Riviera Lake Como" class="absolute inset-0 w-full h-full object-cover opacity-90 img-zoom-hover" onerror="this.src='https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1200&q=80'">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+                    
+                    <!-- Cursive Top Accent -->
+                    <div class="relative z-10">
+                        <span class="font-script text-4xl sm:text-5xl text-editorial-gold drop-shadow-md block tracking-wide transform -rotate-6">Travel More ♡</span>
+                    </div>
+
+                    <!-- Bottom Tagline Overlay -->
+                    <div class="relative z-10 mt-auto pt-20">
+                        <span class="text-xs uppercase tracking-widest text-editorial-gold font-bold block mb-1">CURATED ESSENTIALS</span>
+                        <h3 class="font-serif text-2xl sm:text-3xl font-light text-white leading-tight uppercase tracking-wider">
+                            NEW PLACES<br>NEW PEOPLE<br><span class="italic font-serif font-normal text-editorial-gold">A BRIGHTER YOU.</span>
+                        </h3>
+                    </div>
+                </div>
+
+                <!-- Right Search & Editorial Section -->
+                <div class="lg:col-span-7 p-6 sm:p-10 lg:p-12 flex flex-col justify-between bg-[#FCFBF8]">
+                    
+                    <div class="space-y-6">
+                        <div class="inline-block">
+                            <span class="text-xs font-bold tracking-widest uppercase text-editorial-gold block mb-1" id="hero-tagline-small">IT'S TIME FOR A NEW STORY</span>
+                            <h1 class="font-serif text-3xl sm:text-4xl md:text-5xl text-editorial-dark tracking-tight leading-snug">
+                                <span id="hero-title-main" class="block font-normal">ออกไปพบโลกกว้าง</span>
+                                <span id="hero-title-sub" class="italic font-serif font-normal text-editorial-gold">ในแบบของคุณ</span>
+                            </h1>
+                        </div>
+
+                        <p class="text-xs sm:text-sm text-editorial-muted font-light leading-relaxed max-w-xl" id="hero-description">
+                            ค้นหาแรงบันดาลใจสำหรับทริปครั้งต่อไป ทั้งเมืองยอดฮิตในยุโรป และสถานที่ลับธรรมชาติสวยงามที่ไม่ค่อยมีใครรู้จัก พร้อมข้อมูลภาษาท้องถิ่นสำหรับแผนที่
+                        </p>
+
+                        <!-- Search Bar -->
+                        <div class="relative max-w-xl">
+                            <div class="relative flex items-center bg-white rounded-full border border-editorial-border shadow-soft p-1.5 focus-within:border-editorial-gold transition">
+                                <div class="pl-4 text-editorial-gold">
+                                    <i data-lucide="search" class="w-5 h-5"></i>
+                                </div>
+                                <input 
+                                    type="text" 
+                                    id="searchInput" 
+                                    oninput="handleSearch()"
+                                    placeholder="ค้นหาจุดหมายปลายทาง, สโลเวเนีย, ทะเลสาบ, พาสต้า..." 
+                                    class="w-full py-3 px-4 text-xs sm:text-sm text-editorial-dark placeholder-slate-400 focus:outline-none bg-transparent"
+                                    aria-label="Search destination"
+                                />
+                                <button onclick="clearSearch()" id="clearSearchBtn" class="hidden pr-3 text-slate-400 hover:text-editorial-dark text-xs focus:outline-none">✕</button>
+                                <button onclick="handleSearch()" class="w-10 h-10 rounded-full bg-editorial-dark text-white flex items-center justify-center shrink-0 hover:bg-black transition shadow">
+                                    <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Quick Region Filter Buttons -->
+                        <div class="flex items-center gap-2 overflow-x-auto no-scrollbar py-1 text-xs font-medium">
+                            <button onclick="setRegionFilter('all')" id="region-btn-all" class="region-pill shrink-0 px-4 py-2 rounded-full border bg-editorial-dark text-white border-editorial-dark font-semibold transition">
+                                🌐 <span id="lbl-all-regions">ทุกภูมิภาค</span>
+                            </button>
+                            <button onclick="setRegionFilter('europe')" id="region-btn-europe" class="region-pill shrink-0 px-4 py-2 rounded-full border bg-white border-editorial-border text-editorial-dark hover:border-editorial-gold transition">
+                                🇪🇺 <span id="lbl-europe">ยุโรป (Europe)</span>
+                            </button>
+                            <button onclick="setRegionFilter('asia')" id="region-btn-asia" class="region-pill shrink-0 px-4 py-2 rounded-full border bg-white border-editorial-border text-editorial-dark hover:border-editorial-gold transition">
+                                🌏 <span id="lbl-asia">เอเชีย (Asia)</span>
+                            </button>
+                            <button onclick="setRegionFilter('hidden')" id="region-btn-hidden" class="region-pill shrink-0 px-4 py-2 rounded-full border bg-white border-editorial-border text-editorial-dark hover:border-editorial-gold transition">
+                                💎 <span id="lbl-hidden">สถานที่ลับ (Hidden Gems)</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Bottom Value Proposition Icons Bar (Matching Screenshot) -->
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 pt-8 border-t border-editorial-border mt-8">
+                        
+                        <div class="flex items-center gap-3">
+                            <div class="w-8 h-8 rounded-full bg-editorial-gold/15 text-editorial-gold flex items-center justify-center shrink-0">
+                                <i data-lucide="plane" class="w-4 h-4"></i>
+                            </div>
+                            <div>
+                                <span class="font-bold text-xs text-editorial-dark block leading-none" id="val-1-title">ดีลพิเศษ</span>
+                                <span class="text-[10px] text-editorial-muted font-light" id="val-1-sub">ดีต่อใจ</span>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center gap-3">
+                            <div class="w-8 h-8 rounded-full bg-editorial-gold/15 text-editorial-gold flex items-center justify-center shrink-0">
+                                <i data-lucide="bed" class="w-4 h-4"></i>
+                            </div>
+                            <div>
+                                <span class="font-bold text-xs text-editorial-dark block leading-none" id="val-2-title">ที่พักคุณภาพ</span>
+                                <span class="text-[10px] text-editorial-muted font-light" id="val-2-sub">ราคาดี</span>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center gap-3">
+                            <div class="w-8 h-8 rounded-full bg-editorial-gold/15 text-editorial-gold flex items-center justify-center shrink-0">
+                                <i data-lucide="shield-check" class="w-4 h-4"></i>
+                            </div>
+                            <div>
+                                <span class="font-bold text-xs text-editorial-dark block leading-none" id="val-3-title">จองง่าย</span>
+                                <span class="text-[10px] text-editorial-muted font-light" id="val-3-sub">ปลอดภัย</span>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center gap-3">
+                            <div class="w-8 h-8 rounded-full bg-editorial-gold/15 text-editorial-gold flex items-center justify-center shrink-0">
+                                <i data-lucide="headphones" class="w-4 h-4"></i>
+                            </div>
+                            <div>
+                                <span class="font-bold text-xs text-editorial-dark block leading-none" id="val-4-title">ทีมดูแลทริป</span>
+                                <span class="text-[10px] text-editorial-muted font-light" id="val-4-sub">ตลอด 24/7</span>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Main Content Editorial Cards Grid Section -->
+    <main id="destinations-section" class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        
+        <!-- Section Bar -->
+        <div class="flex flex-col sm:flex-row items-start sm:items-end justify-between gap-4 mb-10 border-b border-editorial-border pb-6">
+            <div>
+                <span class="text-editorial-gold text-xs font-bold tracking-widest uppercase block mb-1">DESTINATION CATALOGUE</span>
+                <h2 class="font-serif text-2xl sm:text-4xl text-editorial-dark tracking-tight flex items-center gap-3">
+                    <span id="sec-title">สถานที่ท่องเที่ยวคัดสรรทั่วโลก</span>
+                </h2>
+                <p class="text-xs sm:text-sm text-editorial-muted mt-1 font-light" id="sec-subtitle">รวมเมืองยอดนิยมในยุโรปและเอเชีย พร้อมสถานที่ลับธรรมชาติน่าค้นหา</p>
+            </div>
+
+            <!-- Items Count Badge -->
+            <div class="text-xs font-medium bg-white text-editorial-dark px-4 py-2 rounded-full border border-editorial-border shrink-0 shadow-sm">
+                <span id="count-label">พบทั้งหมด:</span> <span id="items-count" class="font-bold text-editorial-gold text-sm ml-1">0</span> <span id="count-unit">รายการ</span>
+            </div>
+        </div>
+
+        <!-- Dynamic Destination Cards Grid (Responsive Grid Layout) -->
+        <div id="cardsGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            <!-- Populated Dynamically via JavaScript -->
+        </div>
+
+        <!-- Empty State UI -->
+        <div id="emptyState" class="hidden py-20 text-center space-y-4">
+            <div class="w-16 h-16 mx-auto rounded-full bg-editorial-gold/10 text-editorial-gold flex items-center justify-center text-3xl">
+                🔎
+            </div>
+            <h3 class="text-xl font-serif text-editorial-dark font-semibold" id="empty-title">ไม่พบสถานที่ที่ตรงกับคำค้นหาของคุณ</h3>
+            <p class="text-xs sm:text-sm text-editorial-muted max-w-md mx-auto" id="empty-desc">ลองพิมพ์คำค้นหาอื่น เช่น ทะเลสาบ, ฝรั่งเศส, ออสเตรีย หรือเลือกสลับภูมิภาค</p>
+            <button onclick="resetFilters()" class="px-6 py-2.5 bg-editorial-dark hover:bg-black text-editorial-gold font-me
